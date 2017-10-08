@@ -4,9 +4,9 @@
     <table>
       <tr>
         <th>Task</th>
-        <th type="number">Optimistic</th>
-        <th type="number">Usual</th>
-        <th type="number">Pessimistic</th>
+        <th>Optimistic</th>
+        <th>Usual</th>
+        <th>Pessimistic</th>
         <th>Estimate</th>
         <th>1SD</th>
       </tr>
@@ -25,9 +25,9 @@
       </tr>
       <tr>
         <td><input v-model="taskName" /></td>
-        <td><input v-model="optimistic" /></td>
-        <td><input v-model="usual" /></td>
-        <td><input v-model="pessimistic" /></td>
+        <td><input type="number" v-model="optimistic" /></td>
+        <td><input type="number" v-model="usual" /></td>
+        <td><input type="number" v-model="pessimistic" /></td>
         <td><button v-on:click="addTask">Save</button></td>
       </tr>
     </table>
@@ -64,6 +64,16 @@ export default {
     },
     calculateVariance() {
       return ((this.pessimistic - this.optimistic) ** 2) / (6 ** 2);
+    },
+    isNumber(event) {
+      const evt = event || window.event;
+      const charCode = (evt.which) ? evt.which : evt.keyCode;
+      if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+        evt.preventDefault();
+      } else {
+        return true;
+      }
+      return false;
     },
     totalEstimate() {
       if (this.estimations.length < 1) {
